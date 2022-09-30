@@ -1,0 +1,65 @@
+﻿@page "/admin/users"
+@using Microsoft.AspNetCore.Authorization
+@inject IUserService userService
+@inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "Admin")]
+
+<h3>User List</h3>
+
+@if (userService.GetUsers == null)
+{
+    <span>Loading Users...</span>
+}
+else
+{
+    <button class="btn btn-primary float-end" @onclick="CreateUser">
+        <i class="oi oi-plus"></i> Add new user
+    </button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+
+                <th>Price</th>
+
+                <th>Action</th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="userService.Users" Context="user">
+                <tr>
+
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="(() => EditUser(user.Id))">
+                            <i class="oi oi-pencil"></i>
+                        </button>
+
+                    </td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+}
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await userService.GetUsers();
+    }
+
+    void EditUser(int userId)
+    {
+        NavigationManager.NavigateTo($"admin/users/{userId}");
+    }
+
+    void CreateUser()
+    {
+        NavigationManager.NavigateTo("admin/users");
+    }
+
+
+}

@@ -1,7 +1,14 @@
 global using SmartphoneShop.Shared;
+global using SmartphoneShop.Shared.DTO;
 global using Microsoft.EntityFrameworkCore;
 global using SmartphoneShop.Server.Data;
-using Microsoft.AspNetCore.ResponseCompression;
+global using SmartphoneShop.Server.Services.ProductService;
+global using SmartphoneShop.Server.Services.CartService;
+global using SmartphoneShop.Server.Services.AuthService;
+global using SmartphoneShop.Server.Services.CategoryService;
+global using SmartphoneShop.Server.Services.UserService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +22,19 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+                                    options.TokenValidationParameters = new TokenValidationParameters
+                                    {
+                                        ValidateIssuerSigningKey = true,
+                                        IssuerSigningKey=new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+                                        ValidateIssuer=false,
+                                        ValidateAudience=false
+                                    });
 
 var app = builder.Build();
 
@@ -38,6 +58,8 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 app.MapRazorPages();

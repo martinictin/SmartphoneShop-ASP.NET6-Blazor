@@ -1,0 +1,124 @@
+﻿@page "/admin/product"
+@page "/admin/product/{id:int}"
+@inject IProductService ProductService
+@inject ICategoryService CategoryService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+@if (loading)
+{
+    <span>@msg</span>
+}
+else
+{
+    
+        <h3>Edit "@product.Name"</h3>
+    
+   
+
+    <EditForm Model="product" OnValidSubmit="EditingProduct">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <div class="mb-0">
+            <label for="name">Name</label>
+            <InputText id="name" @bind-Value="product.Name" class="form-control"></InputText>
+        </div>
+        <div class="mb-0">
+            <label for="imageUrl">Image Url</label>
+            <InputText id="imageUrl" @bind-Value="product.ImageUrl" class="form-control"></InputText>
+        </div>
+        <div class="mb-0" style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">            
+                <img src="@product.ImageUrl" />
+        </div>
+        <div class="mb-0">
+            <label for="description">Description</label>
+            <InputTextArea id="description" @bind-Value="product.Description" class="form-control"></InputTextArea>
+        </div>
+        <div class="mb-0">
+            <label for="price">Price</label>
+            <InputNumber id="price" @bind-Value="product.Price" class="form-control"></InputNumber>
+        </div>
+        <hr />
+       
+        <hr />
+        <div class="mb-0">
+            <label for="category">Category</label>
+            <InputSelect id="category" @bind-Value="product.CategoryId" class="form-control">
+                @foreach (var category in CategoryService.Users)
+                {
+                <option value="@category.Id">@category.Name</option>
+                }
+        </InputSelect>
+    </div>
+    <hr />
+   
+    <button type="submit" class="btn btn-primary float-end">@btnText</button>
+    <ValidationSummary></ValidationSummary>
+</EditForm>
+        <button type="button" class="btn btn-danger float-start" @onclick="DeleteProduct">
+            Delete Product
+        </button>
+    
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    Product product = new Product();
+    bool loading = true;
+    string btnText = "";
+    string msg = "Loading...";
+
+    protected override async Task OnInitializedAsync()
+    {
+       
+        await CategoryService.GetAdminCategories();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id == 0)
+        {
+            product = new Product();
+            btnText = "Create Product";
+        }
+        else
+        {
+            Product dbProduct = (await ProductService.GetProduct(Id)).Data;
+            if (dbProduct == null)
+            {
+                msg = $"Product with Id '{Id}' does not exist!";
+                return;
+            }
+            product = dbProduct;            
+            btnText = "Update Product";
+        }
+        loading = false;
+    }
+
+  
+
+    
+    async void EditingProduct()
+    {
+        
+            var result = await ProductService.CreateProduct(product);
+            NavigationManager.NavigateTo($"admin/product/{result.Id}");
+       
+        
+    }
+
+    async void DeleteProduct()
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm",
+            $"Do you really want to delete '{product.Name}'?");
+        if (confirmed)
+        {
+            await ProductService.DeleteProduct(product);
+            NavigationManager.NavigateTo("admin/products");
+        }
+    }
+
+   
+   
+}

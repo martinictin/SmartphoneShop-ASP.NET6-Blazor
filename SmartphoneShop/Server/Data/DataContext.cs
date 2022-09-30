@@ -9,6 +9,21 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Category>().HasData(
+                new Category
+                {
+                    Id = 1,
+                    Name = "Ios",
+                    Url = "ios"
+                },
+                new Category
+                {
+                    Id = 2,
+                    Name = "Android",
+                    Url = "android"
+                }
+                );
+            
             modelBuilder.Entity<Product>().HasData(
                    new Product
                    {
@@ -16,6 +31,7 @@
                        Name = "Iphone 13 Pro Max",
                        Description = "Izdržljiv i zapanjujući dizajn, s nehrđajućim čelikom kirurške kvalitete, keramičkim štitom i vodećom vodootpornošću IP68.",
                        ImageUrl = "https://technostore.hr/upload/products/iphone_13_pro_max_graphite_pdp_image_position_1a_wwen_4_21.jpg",
+                       CategoryId=1
                        
                    },
                    new Product
@@ -23,7 +39,8 @@
                        Id = 2,
                        Name = "Iphone 13 Pro",
                        Description= "Izdržljiv i zapanjujući dizajn, s nehrđajućim čelikom kirurške kvalitete, keramičkim štitom i vodećom vodootpornošću IP68.",
-                       ImageUrl = "http://bbelektronika.hr/wp-content/uploads/2021/10/apple-iphone-13.jpg"
+                       ImageUrl = "http://bbelektronika.hr/wp-content/uploads/2021/10/apple-iphone-13.jpg",
+                       CategoryId=1
                    },
                    new Product
                    {
@@ -31,6 +48,7 @@
                        Name = "Iphone 13",
                        Description= "Naš najnapredniji sustav s dvojnom kamerom. Čip brži od konkurencije. Do 2,5 sati dulje trajanje baterije.",
                        ImageUrl = "https://s3.eu-central-1.amazonaws.com/amadeus2.hr/img/7964-13_pro.png",
+                       CategoryId=1
             
                    },
                    new Product
@@ -39,6 +57,7 @@
                        Name = "Samsung Galaxy S22",
                        Description = "Učinite svaki dan spektakularnim. Predstavljamo Galaxy S22 5G i S22 Plus 5G s Nightography kamerom, pohranom za Vaše snimke i s baterijom koja traje duže.",
                        ImageUrl = "https://smartlab.hr/cms/wp-content/uploads/2022/04/samsung_galaxy_s22_8gb_128gb_negro_001_l.jpg",
+                       CategoryId=2
                    },
                    new Product
                    {
@@ -46,10 +65,12 @@
                        Name = "Huawei P50 Pro",
                        Description = "Stavljajući velike zaslone i bateriju u kompaktno kućište, Huawei P50 Pro je lakši od prethodne generacije i bolje leži u ruci.",
                        ImageUrl = "https://bazzar.hr/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMjNiNUE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--130f390e170100dd7f0cc1c9022050a6bc3b98bb/mobitel-huawei-p50-pro-66-8gb-256gb-crni-65715_3.jpg",
-                    
+                       CategoryId=2
                    }
                    );
         }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

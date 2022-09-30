@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartphoneShop.Server", "SmartphoneShop\Server\SmartphoneShop.Server.csproj", "{85880EBB-8029-44E0-8F37-600FE1A95FC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartphoneShop.Server", "SmartphoneShop\Server\SmartphoneShop.Server.csproj", "{85880EBB-8029-44E0-8F37-600FE1A95FC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartphoneShop.Client", "SmartphoneShop\Client\SmartphoneShop.Client.csproj", "{9D358766-EC6E-4450-BD1A-B0EB1EB0F33E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartphoneShop.Client", "SmartphoneShop\Client\SmartphoneShop.Client.csproj", "{9D358766-EC6E-4450-BD1A-B0EB1EB0F33E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartphoneShop.Shared", "SmartphoneShop\Shared\SmartphoneShop.Shared.csproj", "{8BF9CA25-2067-431E-97D1-30234E22CF0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartphoneShop.Shared", "SmartphoneShop\Shared\SmartphoneShop.Shared.csproj", "{8BF9CA25-2067-431E-97D1-30234E22CF0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
